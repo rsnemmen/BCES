@@ -1,4 +1,4 @@
-Linear regression for data with measurement errors and intrinsic scatter
+Linear regression for data with measurement errors and intrinsic scatter (BCES)
 ==========
 
 Python module for performing robust linear regression on (X,Y) data points where both X and Y have measurement errors. 
@@ -10,12 +10,19 @@ The fitting method is the *bivariate correlated errors and intrinsic scatter* (B
 * it permits the magnitudes of the measurement errors to depend on the measurements
 * other "symmetric" lines such as the bisector and the orthogonal regression can be constructed.
 
-In order to understand how to perform and interpret the regression results, I suggest you to read the paper. 
+In order to understand how to perform and interpret the regression results, please read the paper. 
 
 ## Usage 
 
 	import bces
 	a,b,aerr,berr,covab=bces.bces(x,xerr,y,yerr,cov)
+
+Arguments:
+
+- *x,y* : data arrays
+- *xerr,yerr*: measurement errors affecting x and y
+- *cov* : covariance between the measurement errors
+(all are arrays)
 
 Output:
 
@@ -23,12 +30,7 @@ Output:
 - *aerr,berr* : the standard deviations in a,b
 - *covab* : the covariance between a and b (e.g. for plotting confidence bands)
 
-Arguments:
-
-- *x,y* : data
-- *xerr,yerr*: measurement errors affecting x and y
-- *cov* : covariance between the measurement errors
-(all are arrays)
+There is also a parallel version of the code, *bcesp*, which can be run in the same way as bces.
 
 
 ## Requirements
@@ -37,9 +39,11 @@ Numpy, Scipy, [fish](https://pypi.python.org/pypi/fish/).
 
 ## More
 
-This python module is inspired on the (much faster) fortran routine [originally written Akritas et al](http://www.astro.wisc.edu/%7Emab/archive/stats/stats.html). I wrote it because I wanted something more portable and easier to use, trading off speed. If you speed this module up, please submit a pull request. :)
+This python module is inspired on the (much faster) fortran routine [originally written Akritas et al](http://www.astro.wisc.edu/%7Emab/archive/stats/stats.html). I wrote it because I wanted something more portable and easier to use, trading off speed. 
 
-If you have suggestions of improvements, by all means please contribute! If you end up using this code in your work and it gets published (yay), you could cite one of my papers which made use of BCES fitting as an example of a nice application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/). :)
+If you have suggestions of improvements, by all means please contribute! Suggestions to speed up the module are particularly welcome. :)
+
+If you end up using this code in your work and it gets published (yay), you could cite one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/). :)
 
 For a general tutorial on how to (and how not to) perform linear regression, [please read this paper: Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). In particular, *please refrain from using the bisector method*.
 
