@@ -52,10 +52,11 @@ For the Bayesian way of performing linear regression similar to BCES (and even m
 
 ## Todo
 
+* add practical example of using the code with data
 * speed up the code (numba? f2py?). The big bottleneck is the data bootstrapping
 * implement weighted least squares (WLS)
 * merge with astropy?
-* port the [bayesian regression code linminmax from IDL](https://github.com/wlandsman/IDLAstro/blob/master/pro/math/linmix_err.pro) to python
+* port the [bayesian regression code linmix_err from IDL](https://github.com/wlandsman/IDLAstro/blob/master/pro/math/linmix_err.pro) to python
 
 [Visit the author's web page](http://www.astro.iag.usp.br/~nemmen/) and/or follow him on twitter ([@astrorho](https://twitter.com/astrorho)).
 
