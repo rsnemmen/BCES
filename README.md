@@ -30,12 +30,16 @@ Output:
 - *aerr,berr* : the standard deviations in a,b
 - *covab* : the covariance between a and b (e.g. for plotting confidence bands)
 
-There is also a parallel version of the code, *bcesp*, which can be run in the same way as bces.
-
+If you have no reason to believe that your measurement errors are correlated (which is usual the case), you can provide an array of zeroes as input for *cov*.
 
 ## Requirements
 
 Numpy, Scipy, [fish](https://pypi.python.org/pypi/fish/). 
+
+## Parallel code
+
+There is also a parallel version of the code, *bcesp*, which can be run in the same way as bces and is considerably faster when running the code in multicore machines.
+
 
 ## More
 
@@ -43,11 +47,11 @@ This python module is inspired on the (much faster) fortran routine [originally 
 
 If you have suggestions of improvements, by all means please contribute! Suggestions to speed up the module are particularly welcome. :)
 
-If you end up using this code in your work and it gets published (yay), you could cite one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/). :)
+If you end up using this code in your work and it gets published (yay), I would appreciate if you cited one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/). :)
 
 For a general tutorial on how to (and how not to) perform linear regression, [please read this paper: Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). In particular, *please refrain from using the bisector method*.
 
-For the Bayesian way of performing linear regression similar to BCES (and even more powerful), I suggest having a look at [Kelly, B. 2007, ApJ, 665, 1489](http://labs.adsabs.harvard.edu/adsabs/abs/2007ApJ...665.1489K/).
+For the Bayesian way of performing linear regression similar to BCES (and even more powerful), I suggest having a look at [Kelly, B. 2007, ApJ, 665, 1489](http://labs.adsabs.harvard.edu/adsabs/abs/2007ApJ...665.1489K/). Note that [Kelly's Bayesian regression code](https://github.com/wlandsman/IDLAstro/blob/master/pro/math/linmix_err.pro) is only available for [IDL](http://idlastro.gsfc.nasa.gov), unfortunately.
 
 
 ## Todo
@@ -56,7 +60,7 @@ For the Bayesian way of performing linear regression similar to BCES (and even m
 * speed up the code (numba? f2py?). The big bottleneck is the data bootstrapping
 * implement weighted least squares (WLS)
 * merge with astropy?
-* port the [bayesian regression code linmix_err from IDL](https://github.com/wlandsman/IDLAstro/blob/master/pro/math/linmix_err.pro) to python
+* port B. Kelly's Bayesian regression code linmix_err from IDL to python
 
 [Visit the author's web page](http://www.astro.iag.usp.br/~nemmen/) and/or follow him on twitter ([@astrorho](https://twitter.com/astrorho)).
 
