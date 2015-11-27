@@ -62,7 +62,7 @@ For the Bayesian way of performing linear regression similar to BCES (and even m
 * merge with astropy?
 * port B. Kelly's Bayesian regression code linmix_err from IDL to python
 
-[Visit the author's web page](http://www.astro.iag.usp.br/~nemmen/) and/or follow him on twitter ([@astrorho](https://twitter.com/astrorho)).
+[Visit the author's web page](http://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
 
 ---
 
@@ -71,8 +71,9 @@ For the Bayesian way of performing linear regression similar to BCES (and even m
 
 &nbsp;
 
-Copyright (c) 2012, [Rodrigo Nemmen](http://asd.gsfc.nasa.gov/Rodrigo.Nemmen/Rodrigo_Nemmens_Homepage/Home.html).
+Copyright (c) 2012, [Rodrigo Nemmen](http://rodrigonemmen.com).
 [All rights reserved](http://opensource.org/licenses/BSD-2-Clause).
+
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
