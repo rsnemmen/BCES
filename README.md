@@ -32,6 +32,10 @@ Output:
 
 If you have no reason to believe that your measurement errors are correlated (which is usual the case), you can provide an array of zeroes as input for *cov*.
 
+## Examples of how to use the code
+
+Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). If you have suggestions of more examples, feel free to add them.
+
 ## Requirements
 
 Numpy, Scipy, [fish](https://pypi.python.org/pypi/fish/). 
@@ -54,7 +58,9 @@ For a general tutorial on how to (and how not to) perform linear regression, [pl
 
 ## Todo
 
-* add practical example of using the code with data
+If you have improvements to the code, suggestions of examples etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
+
+* ~~add practical example of using the code with data~~
 * speed up the code (numba? f2py?). The big bottleneck is the data bootstrapping
 * implement weighted least squares (WLS)
 * merge with astropy?
