@@ -25,12 +25,12 @@ try:
 
         """
         if type(data) == list:
-            return(np.random.choice(len(data), 
-                                    size=(len(data), len(data[0]), n_samples), 
+            return(np.random.choice(len(data[0]), 
+                                    size=(n_samples, len(data[0])), 
                                     replace=True, p=weights))
         else: #assuming data is an array or dataframe with rows as different variables
             return(np.random.choice(data.shape[0],
-                                    size=(data.shape[0], data.shape[1], n_samples), 
+                                    size=(n_samples, data.shape[1]), 
                                     replace=True, p=weights))
 except ImportError:
     numba = None
@@ -39,12 +39,12 @@ except ImportError:
         """
         """
         if type(data) == list:
-            return(np.random.choice(len(data), 
-                                    size=(len(data), len(data[0]), n_samples), 
+            return(np.random.choice(len(data[0]), 
+                                    size=(len(data), n_samples, len(data[0])), 
                                     replace=True, p=weights))
         else: #assuming data is an array or dataframe with rows as different variables
             return(np.random.choice(data.shape[0],
-                                    size=(data.shape[0], data.shape[1], n_samples), 
+                                    size=(data.shape[0], n_samples, data.shape[1]), 
                                     replace=True, p=weights))
 
 
@@ -85,9 +85,15 @@ Rodrigo Nemmen, http://goo.gl/8S1Oo
     xi, zeta = np.zeros((2, 4, len(y1)))
     
     # Calculate sigma's for datapoints using length of conf. intervals
-    sig11var = np.mean( y1err**2 )
-    sig22var = np.mean( y2err**2 )
-    sig12var = np.mean( cerr )
+    if cerr is None:
+        cov = np.cov(y1err, y2err)
+        sig11var = cov[0,0]
+        sig22var = cov[1,1]
+        sig12var = cov[0,1]
+    else:
+        sig11var = np.mean( y1err**2 )
+        sig22var = np.mean( y2err**2 )
+        sig12var = np.mean( cerr )
 	
     # Covariance of Y1 (X) and Y2 (Y)
     covar_y1y2 = np.mean( (y1 - y1.mean())*(y2 - y2.mean()) )
@@ -286,7 +292,7 @@ alpha is confidence interal. default 5 - 95%
     
     data = [y1, y1err, y2, y2err, cerr]
     indexes = bootstrap_indexes(data, n_samples=n_samples, weights=None)
-    [y1sim, y1errsim, y2sim, y2errsim, cerrsim] = [data[i][indexes[i]] for i in range(indexes.shape[0])]
+    [y1sim, y1errsim, y2sim, y2errsim, cerrsim] = [data[i][indexes] for i in range(len(data))]
     
     asim, bsim, errasim, errbsim, covabsim = bces_v(y1sim, y1errsim, 
                                                   y2sim, y2errsim, cerrsim)	
@@ -300,20 +306,21 @@ alpha is confidence interal. default 5 - 95%
     cis = np.zeros((2,2,4))
     
     for i, (sim, stat) in enumerate(zip((asim, bsim), (a, b))):
-
+        sim.sort(axis=0)
         # The bias correction value.
         z0 = norm.ppf( ( 1.0*np.sum(sim < stat, axis=0)  ) / n_samples )
     
         # Statistics of the jackknife distribution
         jackindexes = jackknife_indexes(sim[:,0])
-        jstat = np.array([[np.mean(s[indexes]) for s in sim.T] for ind in jackindexes])
+        jstat = np.array([[np.mean(s[ind]) for s in sim.T] for ind in jackindexes])
         jmean = jstat.mean(axis=0)
     
         # Acceleration value
         accel = np.sum( (jmean - jstat)**3, axis=0 ) / ( 6.0 * np.sum( (jmean - jstat)**2, axis=0)**1.5 )
         zs = z0 + norm.ppf(alphas).reshape(alphas.shape+(1,)*z0.ndim)
         avals = norm.cdf(z0 + zs/(1 - accel*zs))
-        cis[i] = avals
+        nvals = np.round((n_samples-1)*avals).astype('int')
+#        cis[i] = sim[nvals]
     
     a_cis = cis[0]
     b_cis = cis[1]
@@ -321,8 +328,10 @@ alpha is confidence interal. default 5 - 95%
     # Error from unbiased sample variances
     erra, errb, covab = np.zeros((3,4))
     for i in range(4):
-        erra[i] = np.sqrt( 1./(n_samples-1) * ( np.sum(asim[:,i]**2)-n_samples*(asim[:,i].mean())**2 ))
-        errb[i] = np.sqrt( 1./(n_samples-1) * ( np.sum(bsim[:,i]**2)-n_samples*(bsim[:,i].mean())**2 ))
+#        erra[i] = np.sqrt( 1./(n_samples-1) * ( np.sum(asim[:,i]**2)-n_samples*(asim[:,i].mean())**2 ))
+#        errb[i] = np.sqrt( 1./(n_samples-1) * ( np.sum(bsim[:,i]**2)-n_samples*(bsim[:,i].mean())**2 ))
         covab[i] = 1./(n_samples-1) * ( np.sum(asim[:,i]*bsim[:,i])-n_samples*asim[:,i].mean()*bsim[:,i].mean() )
-
+    
+    erra = asim.std(axis=0, ddof=1)
+    errb = bsim.std(axis=0, ddof=1)
     return(a, b, erra, errb, covab, a_cis, b_cis)
