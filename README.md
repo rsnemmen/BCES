@@ -26,11 +26,21 @@ Arguments:
 
 Output:
 
-- *a,b* : best-fit parameters a,b of the linear regression 
+- *a,b* : best-fit parameters a,b of the linear regression such that *y = Ax + B*. 
 - *aerr,berr* : the standard deviations in a,b
 - *covab* : the covariance between a and b (e.g. for plotting confidence bands)
 
 If you have no reason to believe that your measurement errors are correlated (which is usual the case), you can provide an array of zeroes as input for *cov*.
+
+Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to the result of one of the different BCES lines: *y|x*, *x|y*, bissector and orthogonal, as detailed in the table below. Please read the [original BCES paper](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/) to understand what these different lines mean.
+
+
+| Element  | Method  |  Description |
+|---|---| --- |
+| 0  | *y\|x*  | Assumes *x* as the independent variable |
+| 1  |  *x\|y* | Assumes *y* as the independent variable |
+| 2  | bissector  | Line that bisects the *y\|x* and *x\|y*. This approach is self-inconsistent, *do not use this method*, cf. [Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). |
+| 3  | orthogonal  | Orthogonal least squares: line that minimizes orthogonal distances. Should be used when it is not clear which variable should be treated as the independent one |
 
 ## Examples of how to use the code
 
@@ -96,7 +106,7 @@ Bayesian hierarchical modelling of data with heteroscedastic and possibly correl
 
 &nbsp;
 
-Copyright (c) 2012, [Rodrigo Nemmen](http://rodrigonemmen.com).
+Copyright (c) 2016, [Rodrigo Nemmen](http://rodrigonemmen.com).
 [All rights reserved](http://opensource.org/licenses/BSD-2-Clause).
 
 
