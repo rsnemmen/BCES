@@ -44,7 +44,9 @@ Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to th
 
 ## Examples of how to use the code
 
-Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). If you have suggestions of more examples, feel free to add them.
+Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). Want do download the notebook and run it locally? [Try this.](https://github.com/takluyver/nbopen)
+
+If you have suggestions of more examples, feel free to add them.
 
 ## Requirements
 
