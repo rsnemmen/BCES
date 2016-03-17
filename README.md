@@ -72,10 +72,11 @@ For a general tutorial on how to (and how not to) perform linear regression, [pl
 
 If you have improvements to the code, suggestions of examples etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
 
-* ~~add practical example of using the code with data~~
-* speed up the code (numba? f2py?). The big bottleneck is the data bootstrapping
-* implement weighted least squares (WLS)
-* merge with astropy?
+* [x] add practical example of using the code with data
+* [] speed up the code (numba? f2py?). The big bottleneck is the data bootstrapping
+* [] implement weighted least squares (WLS)
+* [] merge with astropy?
+* [] install script
 
 [Visit the author's web page](http://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
 
