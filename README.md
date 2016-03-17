@@ -90,7 +90,7 @@ If you have improvements to the code, suggestions of examples etc, feel free to 
 * [ ] speed up the code (numba? f2py?). The big bottleneck is the data bootstrapping
 * [ ] implement weighted least squares (WLS)
 * [ ] merge with astropy?
-* [ ] install script
+* [x] install script
 
 [Visit the author's web page](http://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
 
