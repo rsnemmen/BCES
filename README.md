@@ -42,6 +42,10 @@ Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to th
 | 2  | bissector  | Line that bisects the *y\|x* and *x\|y*. This approach is self-inconsistent, *do not use this method*, cf. [Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). |
 | 3  | orthogonal  | Orthogonal least squares: line that minimizes orthogonal distances. Should be used when it is not clear which variable should be treated as the independent one |
 
+### Parallel code
+
+There is a faster, parallel version of the code, *bcesp*, which runs in the same way as bces and is considerably faster in multicore machines.
+
 ## Examples of how to use the code
 
 Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). Want do download the notebook and run it locally? [Try this.](https://github.com/takluyver/nbopen)
@@ -50,11 +54,19 @@ If you have suggestions of more examples, feel free to add them.
 
 ## Requirements
 
-Numpy, Scipy, [fish](https://pypi.python.org/pypi/fish/). 
+See `requirements.txt`.
 
-## Parallel code
+## Installation
 
-There is also a parallel version of the code, *bcesp*, which can be run in the same way as bces and is considerably faster when running the code in multicore machines.
+The command line script can be installed via
+
+    python setup.py install
+
+You may need to run the last command with `sudo`.
+
+Install the package with a symlink, so that changes to the source files will be immediately available:
+
+    python setup.py develop
 
 
 ## More
