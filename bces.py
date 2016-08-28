@@ -1,3 +1,5 @@
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 import numpy,scipy
 import scipy.stats
 
@@ -144,7 +146,7 @@ Rodrigo Nemmen, http://goo.gl/8S1Oo
 	
 	# Progress bar initialization
 	peixe = fish.ProgressFish(total=nsim)
-	print "Bootstrapping progress:"
+	print("Bootstrapping progress:")
 	
 	"""
 	My convention for storing the results of the bces code below as 
@@ -267,7 +269,7 @@ Usage:
 	import time	# for benchmarking
 	import multiprocessing
 	
-	print "BCES,", nsim,"trials... ",
+	print("BCES,", nsim,"trials... ")
 	tic=time.time()
 	
 	# Find out number of cores available
@@ -320,8 +322,6 @@ Usage:
 		errb[i]=numpy.sqrt( 1./(nsim-1) * ( numpy.sum(bm[:,i]**2)-nsim*(bm[:,i].mean())**2 ))
 		covab[i]=1./(nsim-1) * ( numpy.sum(am[:,i]*bm[:,i])-nsim*am[:,i].mean()*bm[:,i].mean() )
 	
-	print "%f s" % (time.time() - tic)	
+	print("%f s" % (time.time() - tic))
 	
 	return a,b,erra,errb,covab
-
-
