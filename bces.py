@@ -221,7 +221,7 @@ realized the reason was the use of lambda functions.
 	"""
 	y1,y1err,y2,y2err,cerr,nsim=x[0],x[1],x[2],x[3],x[4],x[5]
 	
-	for i in range(nsim):
+	for i in range(int(nsim)):
 		[y1sim,y1errsim,y2sim,y2errsim,cerrsim]=bootstrap([y1,y1err,y2,y2err,cerr])
 
 		asim,bsim,errasim,errbsim,covabsim=bces(y1sim,y1errsim,y2sim,y2errsim,cerrsim)	
