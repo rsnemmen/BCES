@@ -69,39 +69,23 @@ Install the package with a symlink, so that changes to the source files will be 
     python setup.py develop
 
 
-## More
+## Citation
+
+If you end up using this code in your work and it gets published, you should definitely cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). 
+
+Since I spent some time writing this code and making sure it works and is reasonably user-friendly, I would appreciate if you cited one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/). Thanks!
+
+
+## Misc.
 
 This python module is inspired on the (much faster) fortran routine [originally written Akritas et al](http://www.astro.wisc.edu/%7Emab/archive/stats/stats.html). I wrote it because I wanted something more portable and easier to use, trading off speed. 
 
-If you have suggestions of improvements, by all means please contribute! Suggestions to speed up the module are particularly welcome. :)
-
-If you end up using this code in your work and it gets published (yay), I would appreciate if you cited one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/). :)
-
 For a general tutorial on how to (and how not to) perform linear regression, [please read this paper: Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). In particular, *please refrain from using the bisector method*.
 
-If you want to plot confidence bands for your fits, have a look at [nemmen package](https://github.com/rsnemmen/nemmen) (in particular, modules plots and stats).
+If you want to plot confidence bands for your fits, have a look at [`nmmn` package](https://github.com/rsnemmen/nemmen) (in particular, modules `plots` and `stats`).
 
 
-## Todo
-
-If you have improvements to the code, suggestions of examples etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
-
-* [x] add practical example of using the code with data
-* [ ] speed up the code (numba? f2py?). The big bottleneck is the data bootstrapping
-* [ ] implement weighted least squares (WLS)
-* [ ] merge with astropy?
-* [x] install script
-
-[Visit the author's web page](http://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
-
-&nbsp;
-
----
-
-&nbsp;
-
-
-## Bayesian linear regression
+### Bayesian linear regression
 
 There are a couple of Bayesian approaches to perform linear regression which can be more powerful than BCES, some of which are described below.
 
@@ -116,10 +100,25 @@ Bayesian hierarchical modelling of data with heteroscedastic and possibly correl
 [Python example](http://www.astroml.org/book_figures/chapter8/fig_total_least_squares.html) of a linear fit to data with correlated errors in x and y using AstroML. In the literature, this is often referred to as total least squares or errors-in-variables fitting.
 
 
+
+
+## Todo
+
+If you have improvements to the code, suggestions of examples,speeding up the code etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
+
+* [x] add practical example of using the code with data
+* [ ] speed up the code (`numba`? `f2py`?). The big bottleneck is the data bootstrapping
+* [ ] implement weighted least squares (WLS)
+* [ ] merge with astropy?
+* [x] install script
+
+[Visit the author's web page](http://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
+
+&nbsp;
+
 ---
 
 
-&nbsp;
 
 &nbsp;
 
