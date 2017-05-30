@@ -71,9 +71,9 @@ Install the package with a symlink, so that changes to the source files will be 
 
 ## Citation
 
-If you end up using this code in your work and it gets published, you should definitely cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). 
+If you end up using this code in your work and it gets published, you are morally obliged to cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). 
 
-Since I spent some time writing this code and making sure it works and is reasonably user-friendly, I would appreciate if you cited one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)). Thanks!
+Since I spent time writing this code and making sure it works and is reasonably user-friendly, I would ask you to please cite one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)). Thanks!
 
 
 
