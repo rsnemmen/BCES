@@ -29,8 +29,8 @@ Install the package with a symlink, so that changes to the source files will be 
 
 # Usage 
 
-	import bces
-	a,b,aerr,berr,covab=bces.bces(x,xerr,y,yerr,cov)
+	import bces.bces
+	a,b,aerr,berr,covab=bces.bces.bces(x,xerr,y,yerr,cov)
 
 Arguments:
 
@@ -60,11 +60,11 @@ Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to th
 
 ## Parallel code
 
-There is a faster, parallel version of the code, *bcesp*, which runs in the same way as bces and is considerably faster in multicore machines.
+There is a faster, parallel version of the code, `bcesp`, which runs in the same way as `bces` and is considerably faster in multicore machines.
 
 # Examples of how to use the code
 
-Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). Want do download the notebook and run it locally? [Try this.](https://github.com/takluyver/nbopen)
+Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). It includes a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
 
 If you have suggestions of more examples, feel free to add them.
 
