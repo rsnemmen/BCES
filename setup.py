@@ -13,8 +13,8 @@ setup(
     long_description=readme,
     author='Rodrigo Nemmen',
     author_email='rodrigo.nemmen@iag.usp.br',
-    url='https://github.com/rsnemmen/bces',
-    download_url = 'https://github.com/rsnemmen/bces/archive/1.0.tar.gz',
+    url='https://github.com/rsnemmen/BCES',
+    download_url = 'https://github.com/rsnemmen/BCES/archive/1.0.tar.gz',
     license=license,
     keywords = ['statistics', 'fitting', 'linear-regression'],
     packages=find_packages(exclude=('tests', 'docs'))
