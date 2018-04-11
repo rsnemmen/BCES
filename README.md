@@ -3,7 +3,7 @@ Linear regression for data with measurement errors and intrinsic scatter (BCES)
 
 Python module for performing robust linear regression on (X,Y) data points where both X and Y have measurement errors. 
 
-The fitting method is the *bivariate correlated errors and intrinsic scatter* (BCES) and follows the description given in [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). Some of the advantages of BCES regression compared to ordinary least squares fitting (quoted from Akritas & Bershady 1996):
+The fitting method is the *bivariate correlated errors and intrinsic scatter* (BCES) and follows the description given in [Akritas & Bershady. 1996, ApJ](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). Some of the advantages of BCES regression compared to ordinary least squares fitting (quoted from Akritas & Bershady 1996):
 
 * it allows for measurement errors on both variables
 * it permits the measurement errors for the two variables to be dependent
@@ -12,51 +12,7 @@ The fitting method is the *bivariate correlated errors and intrinsic scatter* (B
 
 In order to understand how to perform and interpret the regression results, please read the paper. 
 
-## Usage 
-
-	import bces
-	a,b,aerr,berr,covab=bces.bces(x,xerr,y,yerr,cov)
-
-Arguments:
-
-- *x,y* : data arrays
-- *xerr,yerr*: measurement errors affecting x and y
-- *cov* : covariance between the measurement errors
-(all are arrays)
-
-Output:
-
-- *a,b* : best-fit parameters a,b of the linear regression such that *y = Ax + B*. 
-- *aerr,berr* : the standard deviations in a,b
-- *covab* : the covariance between a and b (e.g. for plotting confidence bands)
-
-If you have no reason to believe that your measurement errors are correlated (which is usual the case), you can provide an array of zeroes as input for *cov*.
-
-Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to the result of one of the different BCES lines: *y|x*, *x|y*, bissector and orthogonal, as detailed in the table below. Please read the [original BCES paper](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/) to understand what these different lines mean.
-
-
-| Element  | Method  |  Description |
-|---|---| --- |
-| 0  | *y\|x*  | Assumes *x* as the independent variable |
-| 1  |  *x\|y* | Assumes *y* as the independent variable |
-| 2  | bissector  | Line that bisects the *y\|x* and *x\|y*. This approach is self-inconsistent, *do not use this method*, cf. [Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). |
-| 3  | orthogonal  | Orthogonal least squares: line that minimizes orthogonal distances. Should be used when it is not clear which variable should be treated as the independent one |
-
-### Parallel code
-
-There is a faster, parallel version of the code, *bcesp*, which runs in the same way as bces and is considerably faster in multicore machines.
-
-## Examples of how to use the code
-
-Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). Want do download the notebook and run it locally? [Try this.](https://github.com/takluyver/nbopen)
-
-If you have suggestions of more examples, feel free to add them.
-
-## Requirements
-
-See `requirements.txt`.
-
-## Installation
+# Installation
 
 The command line script can be installed via
 
@@ -69,15 +25,61 @@ Install the package with a symlink, so that changes to the source files will be 
     python setup.py develop
 
 
-## Citation
-
-If you end up using this code in your work and it gets published, you are morally obliged to cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). 
-
-Since I spent time writing this code and making sure it works and is reasonably user-friendly, I would ask you to please cite one of my papers which made use of BCES fitting as an example of an astronomical application of the method: [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)). Thanks!
 
 
+# Usage 
 
-## Misc.
+	import bces
+	a,b,aerr,berr,covab=bces.bces(x,xerr,y,yerr,cov)
+
+Arguments:
+
+- *x,y* : 1D data arrays
+- *xerr,yerr*: measurement errors affecting x and y, 1D arrays
+- *cov* : covariance between the measurement errors, 1D array
+
+If you have no reason to believe that your measurement errors are correlated (which is usual the case), you can provide an  array of zeroes as input for *cov*:
+
+    cov = numpy.zeros_like(x)
+
+Output:
+
+- *a,b* : best-fit parameters a,b of the linear regression such that *y = Ax + B*. 
+- *aerr,berr* : the standard deviations in a,b
+- *covab* : the covariance between a and b (e.g. for plotting confidence bands)
+
+Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to the result of one of the different BCES lines: *y|x*, *x|y*, bissector and orthogonal, as detailed in the table below. Please read the [original BCES paper](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/) to understand what these different lines mean.
+
+
+| Element  | Method  |  Description |
+|---|---| --- |
+| 0  | *y\|x*  | Assumes *x* as the independent variable |
+| 1  |  *x\|y* | Assumes *y* as the independent variable |
+| 2  | bissector  | Line that bisects the *y\|x* and *x\|y*. This approach is self-inconsistent, *do not use this method*, cf. [Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). |
+| 3  | orthogonal  | Orthogonal least squares: line that minimizes orthogonal distances. Should be used when it is not clear which variable should be treated as the independent one |
+
+## Parallel code
+
+There is a faster, parallel version of the code, *bcesp*, which runs in the same way as bces and is considerably faster in multicore machines.
+
+# Examples of how to use the code
+
+Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/misc%20howto%20bces.ipynb). Want do download the notebook and run it locally? [Try this.](https://github.com/takluyver/nbopen)
+
+If you have suggestions of more examples, feel free to add them.
+
+# Requirements
+
+See `requirements.txt`.
+
+
+# Citation
+
+If you end up using this code in your work and it gets published, you are morally obliged to cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). I also ask you to cite [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)) as one of the examples of application of the BCES method. I spent time writing this code, making sure it works and is user-friendly, so I would appreciate your citation of this paper as a token of gratitute. Thanks!
+
+
+
+# Misc.
 
 This python module is inspired on the (much faster) fortran routine [originally written Akritas et al](http://www.astro.wisc.edu/%7Emab/archive/stats/stats.html). I wrote it because I wanted something more portable and easier to use, trading off speed. 
 
@@ -86,7 +88,7 @@ For a general tutorial on how to (and how not to) perform linear regression, [pl
 If you want to plot confidence bands for your fits, have a look at [`nmmn` package](https://github.com/rsnemmen/nemmen) (in particular, modules `plots` and `stats`).
 
 
-### Bayesian linear regression
+## Bayesian linear regression
 
 There are a couple of Bayesian approaches to perform linear regression which can be more powerful than BCES, some of which are described below.
 
@@ -103,7 +105,7 @@ Bayesian hierarchical modelling of data with heteroscedastic and possibly correl
 
 
 
-## Todo
+# Todo
 
 If you have improvements to the code, suggestions of examples,speeding up the code etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
 
@@ -115,15 +117,11 @@ If you have improvements to the code, suggestions of examples,speeding up the co
 
 [Visit the author's web page](http://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
 
-&nbsp;
 
 ---
 
 
-
-&nbsp;
-
-Copyright (c) 2016, [Rodrigo Nemmen](http://rodrigonemmen.com).
+Copyright (c) 2018, [Rodrigo Nemmen](http://rodrigonemmen.com).
 [All rights reserved](http://opensource.org/licenses/BSD-2-Clause).
 
 
