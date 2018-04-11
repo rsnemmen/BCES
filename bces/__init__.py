@@ -7,5 +7,9 @@ The fitting method is the bivariate correlated errors and intrinsic scatter
 (BCES) and follows the description given in Akritas, M. G., & Bershady, M. A. 
 Astrophysical Journal, 1996, 470, 706. 
 
-.. moduleauthor:: Rodrigo Nemmen <rodrigo.nemmen@iag.usp.br>
+Author: Rodrigo Nemmen, https://rodrigonemmen.com
 """
+
+
+
+

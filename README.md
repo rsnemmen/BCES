@@ -75,7 +75,7 @@ See `requirements.txt`.
 
 # Citation
 
-If you end up using this code in your work and it gets published, you are morally obliged to cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). I also ask you to cite [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)) as one of the examples of application of the BCES method. I spent time writing this code, making sure it works and is user-friendly, so I would appreciate your citation of this paper as a token of gratitute. Thanks!
+If you end up using this code in your work and it gets published, you are morally obliged to cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). I also ask you to cite [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)) as one of the examples of application of the BCES method. I spent time writing this code, making sure it works and is user-friendly, so I would appreciate your citation of [my paper](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) as a token of gratitute. Thanks!
 
 
 
@@ -85,7 +85,7 @@ This python module is inspired on the (much faster) fortran routine [originally 
 
 For a general tutorial on how to (and how not to) perform linear regression, [please read this paper: Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). In particular, *please refrain from using the bisector method*.
 
-If you want to plot confidence bands for your fits, have a look at [`nmmn` package](https://github.com/rsnemmen/nemmen) (in particular, modules `plots` and `stats`).
+If you want to plot confidence bands for your fits, have a look at [`nmmn` package](https://github.com/rsnemmen/nmmn) (in particular, modules `nmmn.plots.fitconf` and `stats`).
 
 
 ## Bayesian linear regression
