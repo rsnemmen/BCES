@@ -14,7 +14,11 @@ In order to understand how to perform and interpret the regression results, plea
 
 # Installation
 
-The command line script can be installed via
+Using `pip`:
+
+    pip install bces
+
+If that does not work, you can install it using the `setup.py` script:
 
     python setup.py install
 
