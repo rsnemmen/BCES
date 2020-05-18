@@ -15,17 +15,18 @@ class TestBCES(unittest.TestCase):
 	# correct fit parameters expected for dataset
 	ans_pars=np.array([ 0.57955173, 17.88855826])
 	ans_cov=np.array([[ 5.85029731e-04, -2.72808055e-02],
-	       [-2.72808055e-02,  1.27299029e+00]])
+		[-2.72808055e-02,  1.27299029e+00]])
 
-    def test_fit(self):
+
+	def test_fit(self):
 		"""
-        Test BCES Y|X fit without bootstrapping.
-        """
-        # fit
-        a,b,erra,errb,covab=bces(xdata,errx,ydata,erry,covdata)
+		Test BCES Y|X fit without bootstrapping.
+		"""
+		# fit
+		a,b,erra,errb,covab=bces(xdata,errx,ydata,erry,covdata)
 
-        np.testing.assert_array_almost_equal(ans_pars,np.array([a[0],b[0]]))
-        #self.assertEqual(result, 6)
+		np.testing.assert_array_almost_equal(ans_pars,np.array([a[0],b[0]]))
+		#self.assertEqual(result, 6)
 
 
 
