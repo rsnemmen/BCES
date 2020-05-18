@@ -120,14 +120,15 @@ If you have improvements to the code, suggestions of examples,speeding up the co
 * [ ] implement weighted least squares (WLS)
 * [ ] merge with astropy?
 * [x] install script
+* [ ] implement tests for `bootstrap` and `bces`
 
-[Visit the author's web page](http://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
+[Visit the author's web page](https://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
 
 
 ---
 
 
-Copyright (c) 2018, [Rodrigo Nemmen](http://rodrigonemmen.com).
+Copyright (c) 2020, [Rodrigo Nemmen](http://rodrigonemmen.com).
 [All rights reserved](http://opensource.org/licenses/BSD-2-Clause).
 
 
