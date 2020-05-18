@@ -3,6 +3,12 @@ import numpy as np
 import scipy
 from scipy.stats import norm
 
+#import astropy functions for use in bootstrap (optional)
+try:
+    import astropy
+    from astropy.stats import biweight_location
+except ImportError:
+    astropy = None
 
 
 # BCES fitting
@@ -224,7 +230,8 @@ def normalize(array, axis=None):
 
 
 def bces_bootstrap(y1, y1err, y2, y2err, cerr=None, n_samples=10000, 
-              weights=None, bias_correct= False, symmetric_errors= True):
+              weights=None, bias_correct= False, symmetric_errors= True,
+              statistic='mean', smooth= False):
     """
     Does the BCES with bootstrap resampling. 
     Original version by Rodrigo Nemmen, http://goo.gl/8S1Oo.
@@ -269,6 +276,18 @@ def bces_bootstrap(y1, y1err, y2, y2err, cerr=None, n_samples=10000,
         values to return a single uncertainty for the a and b parameters.
         This makes the outputs compatible with the standard bces function.
         The default is True (but be cautious).
+    statistic : str, optional
+        Choose the method to calculate values of a and b from their bootstrap distribution.
+        Values can be 'mean', 'biweight', 'median'. 
+        'mean' (default) takes the arithmetic mean using numpy. This can be influenced heavily by outliers.
+        'biweight' uses the astropy.stats.biweight_location function to calculate the robust
+        mean statistic.
+        'median' calculates the distribution center using the median. However, this
+        can result in a sparse discretized distribution, which may require smoothing.
+    smooth : bool, optional
+        Adds a small amount of random noise to each sample (N(0, sigma**2) where sigma = 1/sqrt(n_samples)).
+        This prevents an overly discretized statistic distribution for better
+        maximum-likelihood estimation, especially if using the median statistic.
 
     Returns
     -------
@@ -337,6 +356,7 @@ def bces_bootstrap(y1, y1err, y2, y2err, cerr=None, n_samples=10000,
 	
     # # Set up variables to calculate standard deviations of slope/intercept 
     # # this may not be necessary since we're using the variance of the simulated distributions of a and b
+    
     # xi[0,:,:] = ( (y1sim - y1sim.mean(axis=1)[np.newaxis].T) * (y2sim - a[:,0][np.newaxis].T*y1sim - b[:,0][np.newaxis].T) + a[:,0][np.newaxis].T*y1errsim**2 ) / ((y1sim.var(axis=1) - sig11var)[np.newaxis].T)	# Y|X
     # xi[1,:,:] = ( (y2sim - y2sim.mean(axis=1)[np.newaxis].T) * (y2sim - a[:,1][np.newaxis].T*y1sim - b[:,1][np.newaxis].T) - y2errsim**2 ) / (covar_y1y2[np.newaxis].T)		# X|Y
     # #not yet here
@@ -353,24 +373,39 @@ def bces_bootstrap(y1, y1err, y2, y2err, cerr=None, n_samples=10000,
 
     # # Covariance between a and b (equation after eq. 15 in AB96)
     # covar_ab = covarxiz/y1.size
-    
-	
-    #sort a and b?
+
+    if smooth:
+        #if smoothing, add a small amount of random noise to the bootstrap samples
+        #loc specifies the mean of the distribution, scale specifies the standard deviation
+        a += norm.rvs(loc=0, scale = 1/np.sqrt(n_samples), size= (n_samples, 4))
+        b += norm.rvs(loc=0, scale = 1/np.sqrt(n_samples), size= (n_samples, 4))
+
+    #reduce bootstrapped results by taking the mean along the n_samples axis
+    if statistic not in ['biweight', 'median']: #aka, is mean or any other value
+        aval = a.mean(axis=0)
+        bval = b.mean(axis=0)
+    elif statistic == 'biweight' and astropy is not None:
+        aval = biweight_location(a, axis=0)
+        bval = biweight_location(b, axis=0)
+    else:
+        aval = np.median(a, axis=0)
+        bval = np.median(b, axis=0)
     
     if bias_correct:
         #bca bias correction on the uncertainties on a & b (aerr, berr)
         #this seems to result in tighter uncertainties than the original calculation
         
-        #need to sort each set of a and b values. sort along the n_samples dimension (axis=0)
+        # confidence interval levels
         alpha = 0.67 #1-sigma by default
         alphas = np.array([1-alpha, alpha])
         
+        #need to sort each set of a and b values. sort along the n_samples dimension (axis=0)
         a.sort(axis=0)
         b.sort(axis=0)
     
         # The bias correction value.
-        z0a = norm.ppf( ( 1.0*np.sum(a < a.mean(axis=0), axis=0)  ) / n_samples )
-        z0b = norm.ppf( ( 1.0*np.sum(b < b.mean(axis=0), axis=0)  ) / n_samples )
+        z0a = norm.ppf( ( 1.0*np.sum(a < aval, axis=0)  ) / n_samples )
+        z0b = norm.ppf( ( 1.0*np.sum(b < bval, axis=0)  ) / n_samples )
     
         # Statistics of the jackknife distribution
         jackindexes = jackknife_indexes(len(y1))
@@ -385,13 +420,14 @@ def bces_bootstrap(y1, y1err, y2, y2err, cerr=None, n_samples=10000,
         zsa = z0a + norm.ppf(alphas).reshape(alphas.shape+(1,)*z0a.ndim)
         zsb = z0b + norm.ppf(alphas).reshape(alphas.shape+(1,)*z0b.ndim)
     
-        avals_a = norm.cdf(z0a + zsa/(1 - accel[np.newaxis].T*zsa))
-        avals_b = norm.cdf(z0b + zsb/(1 - accel[np.newaxis].T*zsb))
+        dist_cutoffs_a = norm.cdf(z0a + zsa/(1 - accel[np.newaxis].T*zsa))
+        dist_cutoffs_b = norm.cdf(z0b + zsb/(1 - accel[np.newaxis].T*zsb))
         
-        #calculate the indices for the alpha-level values in the distribution
-        nvals_a = np.round((n_samples - 1) * avals_a).astype(int)
-        nvals_b = np.round((n_samples - 1) * avals_b).astype(int)
+        #calculate the indices for the alpha-level values in the statistic distributions (a & b)
+        nvals_a = np.round((n_samples - 1) * dist_cutoffs_a).astype(int)
+        nvals_b = np.round((n_samples - 1) * dist_cutoffs_b).astype(int)
         
+        #initialize error arrays
         erra = np.empty((2,4))
         errb = np.empty_like(erra)
         cia = np.empty_like(erra)
@@ -406,24 +442,20 @@ def bces_bootstrap(y1, y1err, y2, y2err, cerr=None, n_samples=10000,
         # Note: this returns values from both sides of the distribution, which
         # may not be symmetric.
         # if symmetric_errors = True, average the error values to make (1x4) arrays
-        erra = np.abs(a.mean(axis=0) - cia)
-        errb = np.abs(b.mean(axis=0) - cib)
+        erra = np.abs(aval - cia)
+        errb = np.abs(bval - cib)
         if symmetric_errors:
             erra = erra.mean(axis=0)
             errb = errb.mean(axis=0)
         
     else:
         #no bias correction.
-        erra = np.sqrt( 1./(n_samples-1) * ( np.sum(a**2, axis=0) - n_samples*(a.mean(axis=0))**2 ))
-        errb = np.sqrt( 1./(n_samples-1) * ( np.sum(b**2, axis=0) - n_samples*(b.mean(axis=0))**2 ))
+        erra = np.sqrt( 1./(n_samples-1) * ( np.sum(a**2, axis=0) - n_samples*(aval)**2 ))
+        errb = np.sqrt( 1./(n_samples-1) * ( np.sum(b**2, axis=0) - n_samples*(bval)**2 ))
         
-    covab = 1./(n_samples-1) * ( np.sum(a*b, axis=0) - n_samples * a.mean(axis=0) * b.mean(axis=0) )
+    covab = 1./(n_samples-1) * ( np.sum(a*b, axis=0) - n_samples * aval * bval )
     
-    #reduce bootstrapped results by taking the mean along the n_samples axis
-    a = a.mean(axis=0)
-    b = b.mean(axis=0)
-        
-    return(a, b, erra, errb, covab)
+    return(aval, bval, erra, errb, covab)
 
 
 
