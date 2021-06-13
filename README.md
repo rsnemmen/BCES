@@ -31,10 +31,13 @@ Install the package with a symlink, so that changes to the source files will be 
 
 
 
+
+
+
 # Usage 
 
 	import bces.bces as BCES
-	a,b,aerr,berr,covab=bces.bces.bces(x,xerr,y,yerr,cov)
+	a,b,aerr,berr,covab=BCES.bcesp(x,xerr,y,yerr,cov)
 
 Arguments:
 
@@ -62,9 +65,12 @@ Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to th
 | 2  | bissector  | Line that bisects the *y\|x* and *x\|y*. This approach is self-inconsistent, *do not use this method*, cf. [Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). |
 | 3  | orthogonal  | Orthogonal least squares: line that minimizes orthogonal distances. Should be used when it is not clear which variable should be treated as the independent one |
 
-## Parallel code
+By default, `bcesp` run in parallel with bootstrapping.
 
-There is a faster, parallel version of the code, `bcesp`, which runs in the same way as `bces` and is considerably faster in multicore machines.
+
+
+
+
 
 # Examples
 
@@ -74,6 +80,18 @@ There is a faster, parallel version of the code, `bcesp`, which runs in the same
 
 If you have suggestions of more examples, feel free to add them.
 
+
+
+# Running Tests
+
+To run tests, run the following command
+
+```bash
+pytest
+```
+
+
+
 # Requirements
 
 See `requirements.txt`.
@@ -81,7 +99,17 @@ See `requirements.txt`.
 
 # Citation
 
-If you end up using this code in your work and it gets published, you are morally obliged to cite the original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). I also ask you to cite [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)) as one of the examples of application of the BCES method. I spent time writing this code, making sure it works and is user-friendly, so I would appreciate your citation of [my paper](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) as a token of gratitute. Thanks!
+If you end up using this code in your paper, you are morally obliged to cite the following works 
+
+- The original BCES paper: [Akritas, M. G., & Bershady, M. A. Astrophysical Journal, 1996, 470, 706](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/) 
+- [Nemmen, R. et al. *Science*, 2012, 338, 1445](http://labs.adsabs.harvard.edu/adsabs/abs/2012Sci...338.1445N/) ([bibtex citation info](http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2012Sci...338.1445N&data_type=BIBTEX&db_key=AST&nocookieset=1)) 
+
+I spent considerable time writing this code, making sure it is correct and *user-friendly*, so I would appreciate your citation of the second paper in the above list as a token of gratitude.
+
+If you are *really* happy with the code, [you can buy me a beer](https://www.dropbox.com/s/a0rp5un6ubrkph2/crypto%20wallets.pdf?dl=0).
+
+
+
 
 
 
