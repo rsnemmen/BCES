@@ -66,9 +66,9 @@ Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to th
 
 There is a faster, parallel version of the code, `bcesp`, which runs in the same way as `bces` and is considerably faster in multicore machines.
 
-# Examples of how to use the code
+# Examples
 
-Check out this [jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/stats%20howto%20bces.ipynb). It includes a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
+[`bces-example.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/bces-example.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
 
 ![](./fit.png)
 
@@ -115,11 +115,9 @@ Bayesian hierarchical modelling of data with heteroscedastic and possibly correl
 
 If you have improvements to the code, suggestions of examples,speeding up the code etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
 
-* [x] add practical example of using the code with data
 * [ ] speed up the code (`numba`? `f2py`?). The big bottleneck is the data bootstrapping
 * [ ] implement weighted least squares (WLS)
 * [ ] merge with astropy?
-* [x] install script
 * [ ] implement tests for `bootstrap` and `bces`
 
 [Visit the author's web page](https://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
@@ -128,7 +126,7 @@ If you have improvements to the code, suggestions of examples,speeding up the co
 ---
 
 
-Copyright (c) 2020, [Rodrigo Nemmen](http://rodrigonemmen.com).
+Copyright (c) 2021, [Rodrigo Nemmen](https://rodrigonemmen.com).
 [All rights reserved](http://opensource.org/licenses/BSD-2-Clause).
 
 
