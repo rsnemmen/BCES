@@ -33,7 +33,7 @@ Install the package with a symlink, so that changes to the source files will be 
 
 # Usage 
 
-	import bces.bces
+	import bces.bces as BCES
 	a,b,aerr,berr,covab=bces.bces.bces(x,xerr,y,yerr,cov)
 
 Arguments:
@@ -118,7 +118,8 @@ If you have improvements to the code, suggestions of examples,speeding up the co
 * [ ] speed up the code (`numba`? `f2py`?). The big bottleneck is the data bootstrapping
 * [ ] implement weighted least squares (WLS)
 * [ ] merge with astropy?
-* [ ] implement tests for `bootstrap` and `bces`
+* [x] implement unit testing: `bces`
+* [ ] unit testing: `bootstrap`
 
 [Visit the author's web page](https://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
 
