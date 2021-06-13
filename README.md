@@ -68,7 +68,7 @@ There is a faster, parallel version of the code, `bcesp`, which runs in the same
 
 # Examples
 
-[`bces-example.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/bces-example.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
+[`bces-example.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/bces-examples.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
 
 ![](./fit.png)
 
