@@ -24,7 +24,7 @@ If that does not work, you can install it using the `setup.py` script:
 
 You may need to run the last command with `sudo`.
 
-Install the package with a symlink, so that changes to the source files will be immediately available:
+Alternatively, if you plan to modify the source then install the package with a symlink, so that changes to the source files will be immediately available:
 
     python setup.py develop
 
@@ -143,11 +143,9 @@ Bayesian hierarchical modelling of data with heteroscedastic and possibly correl
 
 If you have improvements to the code, suggestions of examples,speeding up the code etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
 
-* [ ] speed up the code (`numba`? `f2py`?). The big bottleneck is the data bootstrapping
 * [ ] implement weighted least squares (WLS)
-* [ ] merge with astropy?
 * [x] implement unit testing: `bces`
-* [ ] unit testing: `bootstrap`
+* [x] unit testing: `bootstrap`
 
 [Visit the author's web page](https://rodrigonemmen.com/) and/or follow him on twitter ([@nemmen](https://twitter.com/nemmen)).
 
