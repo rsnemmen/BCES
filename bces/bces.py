@@ -33,7 +33,7 @@ Arguments:
 (all are arrays)
 
 v1 Mar 2012: ported from bces_regress.f. Added covariance output.
-Rodrigo Nemmen, http://goo.gl/8S1Oo
+Rodrigo Nemmen
 	"""
 	# Arrays holding the code main results for each method:
 	# Elements: 0-Y|X, 1-X|Y, 2-bisector, 3-orthogonal
@@ -100,8 +100,6 @@ where x is either an array or a list of arrays. If it is a
 list, the code returns the corresponding list of bootstrapped 
 arrays assuming that the same position in these arrays map the 
 same "physical" object.
-
-Rodrigo Nemmen, http://goo.gl/8S1Oo
 	"""
 	if type(v)==list:
 		vboot=[]	# list of boostrapped arrays
@@ -140,7 +138,6 @@ Usage:
 .. note:: this method is definitely not nearly as fast as bces_regress.f. Needs to be optimized. Maybe adapt the fortran routine using f2python?
 
 v1 Mar 2012: ported from bces_regress.f. Added covariance output.
-Rodrigo Nemmen, http://goo.gl/8S1Oo
 	"""
 	import fish
 	
@@ -264,7 +261,7 @@ Usage:
 * v1 Mar 2012: serial version ported from bces_regress.f. Added covariance output.
 * v2 May 3rd 2012: parallel version ported from nemmen.bcesboot.
 
-.. codeauthor: Rodrigo Nemmen, http://goo.gl/8S1Oo
+.. codeauthor: Rodrigo Nemmen
 	"""	
 	import time	# for benchmarking
 	import multiprocessing
