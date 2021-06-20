@@ -45,7 +45,7 @@ Arguments:
 - *xerr,yerr*: measurement errors affecting x and y, 1D arrays
 - *cov* : covariance between the measurement errors, 1D array
 
-If you have no reason to believe that your measurement errors are correlated (which is usual the case), you can provide an  array of zeroes as input for *cov*:
+If you have no reason to believe that your measurement errors are correlated (which is usually the case), you can provide an  array of zeroes as input for *cov*:
 
     cov = numpy.zeros_like(x)
 
@@ -84,10 +84,10 @@ If you have suggestions of more examples, feel free to add them.
 
 # Running Tests
 
-To run tests, run the following command
+To test your installation, run the following command inside the BCES directory:
 
 ```bash
-pytest
+pytest -v
 ```
 
 
