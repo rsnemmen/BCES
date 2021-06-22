@@ -308,6 +308,11 @@ Usage:
 			bm=numpy.vstack((bm,m[1]))
 		i=i+1
 	
+	# sometimes, depending on the dataset, the regression parameters might
+	# be F$%ed up with NaNs. TODO: implement a check to see if there are 
+	# any NaN elements in the bootstrapped parameters and remove them from
+	# the sample
+
 	# Computes the bootstrapping results on the stacked matrixes
 	a=numpy.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
 	b=numpy.array([ bm[:,0].mean(),bm[:,1].mean(),bm[:,2].mean(),bm[:,3].mean() ])
