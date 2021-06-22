@@ -265,6 +265,7 @@ Usage:
 	"""	
 	import time	# for benchmarking
 	import multiprocessing
+	import nmmn.lsd
 	
 	print("BCES,", nsim,"trials... ")
 	tic=time.time()
@@ -308,10 +309,16 @@ Usage:
 			bm=numpy.vstack((bm,m[1]))
 		i=i+1
 	
-	# sometimes, depending on the dataset, the regression parameters might
-	# be F$%ed up with NaNs. TODO: implement a check to see if there are 
-	# any NaN elements in the bootstrapped parameters and remove them from
-	# the sample
+	# Sometimes, if the dataset is very small, the regression parameters in
+	# some instances of the bootstrapped sample may have NaNs i.e. failed
+	# regression (I need to investigate this in more details).
+	# The following 4 lines check to see if there are NaNs in the bootstrapped 
+	# fits and remove them from the final sample.
+	if True in numpy.isnan(am):
+		idel=nmmn.lsd.findnan(am[:,2])
+		print("Bootstrapping error: regression failed in",numpy.size(idel),"instances. They were removed.")
+		am=numpy.delete(am,idel,0)
+		bm=numpy.delete(bm,idel,0)
 
 	# Computes the bootstrapping results on the stacked matrixes
 	a=numpy.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
