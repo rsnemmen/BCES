@@ -140,10 +140,10 @@ Usage:
 
 v1 Mar 2012: ported from bces_regress.f. Added covariance output.
 	"""
-	import fish
+	#import fish
 	
 	# Progress bar initialization
-	peixe = fish.ProgressFish(total=nsim)
+	#peixe = fish.ProgressFish(total=nsim)
 	print("Bootstrapping progress:")
 	
 	"""
@@ -169,7 +169,10 @@ v1 Mar 2012: ported from bces_regress.f. Added covariance output.
 			bm=np.vstack((bm,bsim))
 				
 		# Progress bar
-		peixe.animate(amount=i)
+		#peixe.animate(amount=i)
+
+	if True in np.isnan(am):
+		am,bm=checkNan(am,bm)
 	
 	# Bootstrapping results
 	a=np.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
@@ -186,6 +189,24 @@ v1 Mar 2012: ported from bces_regress.f. Added covariance output.
 	
 
 
+
+
+
+def checkNan(am,bm):
+	"""
+	Sometimes, if the dataset is very small, the regression parameters in
+	some instances of the bootstrapped sample may have NaNs i.e. failed
+	regression (I need to investigate this in more details).
+	
+	This method checks to see if there are NaNs in the bootstrapped 
+	fits and remove them from the final sample.
+	"""
+	import nmmn.lsd
+
+	idel=nmmn.lsd.findnan(am[:,2])
+	print("Bootstrapping error: regression failed in",np.size(idel),"instances. They were removed.")
+
+	return np.delete(am,idel,0),np.delete(bm,idel,0)
 
 
 
@@ -266,7 +287,6 @@ Usage:
 	"""	
 	import time	# for benchmarking
 	import multiprocessing
-	import nmmn.lsd
 	
 	print("BCES,", nsim,"trials... ")
 	tic=time.time()
@@ -310,16 +330,8 @@ Usage:
 			bm=np.vstack((bm,m[1]))
 		i=i+1
 	
-	# Sometimes, if the dataset is very small, the regression parameters in
-	# some instances of the bootstrapped sample may have NaNs i.e. failed
-	# regression (I need to investigate this in more details).
-	# The following 4 lines check to see if there are NaNs in the bootstrapped 
-	# fits and remove them from the final sample.
 	if True in np.isnan(am):
-		idel=nmmn.lsd.findnan(am[:,2])
-		print("Bootstrapping error: regression failed in",np.size(idel),"instances. They were removed.")
-		am=np.delete(am,idel,0)
-		bm=np.delete(bm,idel,0)
+		am,bm=checkNan(am,bm)
 
 	# Computes the bootstrapping results on the stacked matrixes
 	a=np.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
@@ -335,3 +347,6 @@ Usage:
 	print("%f s" % (time.time() - tic))
 	
 	return a,b,erra,errb,covab
+
+
+
