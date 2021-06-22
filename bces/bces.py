@@ -137,26 +137,22 @@ Usage:
 :returns: covab -- the covariance between a and b (e.g. for plotting confidence bands)
 
 .. note:: this method is definitely not nearly as fast as bces_regress.f. Needs to be optimized. Maybe adapt the fortran routine using f2python?
-
-v1 Mar 2012: ported from bces_regress.f. Added covariance output.
 	"""
-	#import fish
+	import tqdm
 	
-	# Progress bar initialization
-	#peixe = fish.ProgressFish(total=nsim)
 	print("Bootstrapping progress:")
 	
 	"""
 	My convention for storing the results of the bces code below as 
 	matrixes for processing later are as follow:
 	
-	      simulation\method  y|x x|y bisector orthogonal
+	      simulation-method  y|x x|y bisector orthogonal
 	          sim0           ...
 	Am =      sim1           ...
 	          sim2           ...
 	          sim3           ...
 	"""
-	for i in range(nsim):
+	for i in tqdm.tqdm(range(nsim)):
 		[y1sim,y1errsim,y2sim,y2errsim,cerrsim]=bootstrap([y1,y1err,y2,y2err,cerr])
 		
 		asim,bsim,errasim,errbsim,covabsim=bces(y1sim,y1errsim,y2sim,y2errsim,cerrsim)	
@@ -168,8 +164,6 @@ v1 Mar 2012: ported from bces_regress.f. Added covariance output.
 			am=np.vstack((am,asim))
 			bm=np.vstack((bm,bsim))
 				
-		# Progress bar
-		#peixe.animate(amount=i)
 
 	if True in np.isnan(am):
 		am,bm=checkNan(am,bm)

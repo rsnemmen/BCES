@@ -1,5 +1,5 @@
 numpy
 scipy
-fish
+tqdm
 numdifftools
 nmmn
