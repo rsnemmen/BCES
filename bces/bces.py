@@ -1,6 +1,7 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-import numpy,scipy
+import numpy as np
+import scipy
 import scipy.stats
 
 
@@ -37,27 +38,27 @@ Rodrigo Nemmen
 	"""
 	# Arrays holding the code main results for each method:
 	# Elements: 0-Y|X, 1-X|Y, 2-bisector, 3-orthogonal
-	a,b,avar,bvar,covarxiz,covar_ba=numpy.zeros(4),numpy.zeros(4),numpy.zeros(4),numpy.zeros(4),numpy.zeros(4),numpy.zeros(4)
+	a,b,avar,bvar,covarxiz,covar_ba=np.zeros(4),np.zeros(4),np.zeros(4),np.zeros(4),np.zeros(4),np.zeros(4)
 	# Lists holding the xi and zeta arrays for each method above
 	xi,zeta=[],[]
 	
 	# Calculate sigma's for datapoints using length of conf. intervals
-	sig11var = numpy.mean( y1err**2 )
-	sig22var = numpy.mean( y2err**2 )
-	sig12var = numpy.mean( cerr )
+	sig11var = np.mean( y1err**2 )
+	sig22var = np.mean( y2err**2 )
+	sig12var = np.mean( cerr )
 	
 	# Covariance of Y1 (X) and Y2 (Y)
-	covar_y1y2 = numpy.mean( (y1-y1.mean())*(y2-y2.mean()) )
+	covar_y1y2 = np.mean( (y1-y1.mean())*(y2-y2.mean()) )
 
 	# Compute the regression slopes
 	a[0] = (covar_y1y2 - sig12var)/(y1.var() - sig11var)	# Y|X
 	a[1] = (y2.var() - sig22var)/(covar_y1y2 - sig12var)	# X|Y
-	a[2] = ( a[0]*a[1] - 1.0 + numpy.sqrt((1.0 + a[0]**2)*(1.0 + a[1]**2)) ) / (a[0]+a[1])	# bisector
+	a[2] = ( a[0]*a[1] - 1.0 + np.sqrt((1.0 + a[0]**2)*(1.0 + a[1]**2)) ) / (a[0]+a[1])	# bisector
 	if covar_y1y2<0:
 		sign = -1.
 	else:
 		sign = 1.
-	a[3] = 0.5*((a[1]-(1./a[0])) + sign*numpy.sqrt(4.+(a[1]-(1./a[0]))**2))	# orthogonal
+	a[3] = 0.5*((a[1]-(1./a[0])) + sign*np.sqrt(4.+(a[1]-(1./a[0]))**2))	# orthogonal
 	
 	# Compute intercepts
 	for i in range(4):
@@ -66,8 +67,8 @@ Rodrigo Nemmen
 	# Set up variables to calculate standard deviations of slope/intercept 
 	xi.append(	( (y1-y1.mean()) * (y2-a[0]*y1-b[0]) + a[0]*y1err**2 ) / (y1.var()-sig11var)	)	# Y|X
 	xi.append(	( (y2-y2.mean()) * (y2-a[1]*y1-b[1]) - y2err**2 ) / covar_y1y2	)	# X|Y
-	xi.append(	xi[0] * (1.+a[1]**2)*a[2] / ((a[0]+a[1])*numpy.sqrt((1.+a[0]**2)*(1.+a[1]**2))) + xi[1] * (1.+a[0]**2)*a[2] / ((a[0]+a[1])*numpy.sqrt((1.+a[0]**2)*(1.+a[1]**2)))	)	# bisector
-	xi.append(	xi[0] * a[3]/(a[0]**2*numpy.sqrt(4.+(a[1]-1./a[0])**2)) + xi[1]*a[3]/numpy.sqrt(4.+(a[1]-1./a[0])**2)	)	# orthogonal
+	xi.append(	xi[0] * (1.+a[1]**2)*a[2] / ((a[0]+a[1])*np.sqrt((1.+a[0]**2)*(1.+a[1]**2))) + xi[1] * (1.+a[0]**2)*a[2] / ((a[0]+a[1])*np.sqrt((1.+a[0]**2)*(1.+a[1]**2)))	)	# bisector
+	xi.append(	xi[0] * a[3]/(a[0]**2*np.sqrt(4.+(a[1]-1./a[0])**2)) + xi[1]*a[3]/np.sqrt(4.+(a[1]-1./a[0])**2)	)	# orthogonal
 	for i in range(4):
 		zeta.append( y2 - a[i]*y1 - y1.mean()*xi[i]	)
 
@@ -77,12 +78,12 @@ Rodrigo Nemmen
 		bvar[i]=zeta[i].var()/zeta[i].size
 		
 		# Sample covariance obtained from xi and zeta (paragraph after equation 15 in AB96)
-		covarxiz[i]=numpy.mean( (xi[i]-xi[i].mean()) * (zeta[i]-zeta[i].mean()) )
+		covarxiz[i]=np.mean( (xi[i]-xi[i].mean()) * (zeta[i]-zeta[i].mean()) )
 	
 	# Covariance between a and b (equation after eq. 15 in AB96)
 	covar_ab=covarxiz/y1.size
 	
-	return a,b,numpy.sqrt(avar),numpy.sqrt(bvar),covar_ab
+	return a,b,np.sqrt(avar),np.sqrt(bvar),covar_ab
 	
 	
 	
@@ -164,22 +165,22 @@ v1 Mar 2012: ported from bces_regress.f. Added covariance output.
 			# Initialize the matrixes
 			am,bm=asim.copy(),bsim.copy()
 		else: 
-			am=numpy.vstack((am,asim))
-			bm=numpy.vstack((bm,bsim))
+			am=np.vstack((am,asim))
+			bm=np.vstack((bm,bsim))
 				
 		# Progress bar
 		peixe.animate(amount=i)
 	
 	# Bootstrapping results
-	a=numpy.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
-	b=numpy.array([ bm[:,0].mean(),bm[:,1].mean(),bm[:,2].mean(),bm[:,3].mean() ])
+	a=np.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
+	b=np.array([ bm[:,0].mean(),bm[:,1].mean(),bm[:,2].mean(),bm[:,3].mean() ])
 
 	# Error from unbiased sample variances
-	erra,errb,covab=numpy.zeros(4),numpy.zeros(4),numpy.zeros(4)
+	erra,errb,covab=np.zeros(4),np.zeros(4),np.zeros(4)
 	for i in range(4):
-		erra[i]=numpy.sqrt( 1./(nsim-1) * ( numpy.sum(am[:,i]**2)-nsim*(am[:,i].mean())**2 ))
-		errb[i]=numpy.sqrt( 1./(nsim-1) * ( numpy.sum(bm[:,i]**2)-nsim*(bm[:,i].mean())**2 ))
-		covab[i]=1./(nsim-1) * ( numpy.sum(am[:,i]*bm[:,i])-nsim*am[:,i].mean()*bm[:,i].mean() )
+		erra[i]=np.sqrt( 1./(nsim-1) * ( np.sum(am[:,i]**2)-nsim*(am[:,i].mean())**2 ))
+		errb[i]=np.sqrt( 1./(nsim-1) * ( np.sum(bm[:,i]**2)-nsim*(bm[:,i].mean())**2 ))
+		covab[i]=1./(nsim-1) * ( np.sum(am[:,i]*bm[:,i])-nsim*am[:,i].mean()*bm[:,i].mean() )
 	
 	return a,b,erra,errb,covab
 	
@@ -227,8 +228,8 @@ realized the reason was the use of lambda functions.
 			# Initialize the matrixes
 			am,bm=asim.copy(),bsim.copy()
 		else: 
-			am=numpy.vstack((am,asim))
-			bm=numpy.vstack((bm,bsim))
+			am=np.vstack((am,asim))
+			bm=np.vstack((bm,bsim))
 		
 	return am,bm
 
@@ -305,8 +306,8 @@ Usage:
 			# Initialize the matrixes
 			am,bm=m[0].copy(),m[1].copy()
 		else: 
-			am=numpy.vstack((am,m[0]))
-			bm=numpy.vstack((bm,m[1]))
+			am=np.vstack((am,m[0]))
+			bm=np.vstack((bm,m[1]))
 		i=i+1
 	
 	# Sometimes, if the dataset is very small, the regression parameters in
@@ -314,22 +315,22 @@ Usage:
 	# regression (I need to investigate this in more details).
 	# The following 4 lines check to see if there are NaNs in the bootstrapped 
 	# fits and remove them from the final sample.
-	if True in numpy.isnan(am):
+	if True in np.isnan(am):
 		idel=nmmn.lsd.findnan(am[:,2])
-		print("Bootstrapping error: regression failed in",numpy.size(idel),"instances. They were removed.")
-		am=numpy.delete(am,idel,0)
-		bm=numpy.delete(bm,idel,0)
+		print("Bootstrapping error: regression failed in",np.size(idel),"instances. They were removed.")
+		am=np.delete(am,idel,0)
+		bm=np.delete(bm,idel,0)
 
 	# Computes the bootstrapping results on the stacked matrixes
-	a=numpy.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
-	b=numpy.array([ bm[:,0].mean(),bm[:,1].mean(),bm[:,2].mean(),bm[:,3].mean() ])
+	a=np.array([ am[:,0].mean(),am[:,1].mean(),am[:,2].mean(),am[:,3].mean() ])
+	b=np.array([ bm[:,0].mean(),bm[:,1].mean(),bm[:,2].mean(),bm[:,3].mean() ])
 
 	# Error from unbiased sample variances
-	erra,errb,covab=numpy.zeros(4),numpy.zeros(4),numpy.zeros(4)
+	erra,errb,covab=np.zeros(4),np.zeros(4),np.zeros(4)
 	for i in range(4):
-		erra[i]=numpy.sqrt( 1./(nsim-1) * ( numpy.sum(am[:,i]**2)-nsim*(am[:,i].mean())**2 ))
-		errb[i]=numpy.sqrt( 1./(nsim-1) * ( numpy.sum(bm[:,i]**2)-nsim*(bm[:,i].mean())**2 ))
-		covab[i]=1./(nsim-1) * ( numpy.sum(am[:,i]*bm[:,i])-nsim*am[:,i].mean()*bm[:,i].mean() )
+		erra[i]=np.sqrt( 1./(nsim-1) * ( np.sum(am[:,i]**2)-nsim*(am[:,i].mean())**2 ))
+		errb[i]=np.sqrt( 1./(nsim-1) * ( np.sum(bm[:,i]**2)-nsim*(bm[:,i].mean())**2 ))
+		covab[i]=1./(nsim-1) * ( np.sum(am[:,i]*bm[:,i])-nsim*am[:,i].mean()*bm[:,i].mean() )
 	
 	print("%f s" % (time.time() - tic))
 	
