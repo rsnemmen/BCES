@@ -153,7 +153,7 @@ If you have improvements to the code, suggestions of examples,speeding up the co
 ---
 
 
-Copyright (c) 2021, [Rodrigo Nemmen](https://rodrigonemmen.com).
+Copyright (c) 2023, [Rodrigo Nemmen](https://rodrigonemmen.com).
 [All rights reserved](http://opensource.org/licenses/BSD-2-Clause).
 
 

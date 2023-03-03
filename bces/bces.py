@@ -32,9 +32,6 @@ Arguments:
 - xerr,yerr: measurement errors affecting x and y
 - cov : covariance between the measurement errors
 (all are arrays)
-
-v1 Mar 2012: ported from bces_regress.f. Added covariance output.
-Rodrigo Nemmen
 	"""
 	# Arrays holding the code main results for each method:
 	# Elements: 0-Y|X, 1-X|Y, 2-bisector, 3-orthogonal
@@ -105,11 +102,11 @@ same "physical" object.
 	if type(v)==list:
 		vboot=[]	# list of boostrapped arrays
 		n=v[0].size
-		iran=scipy.random.randint(0,n,n)	# Array of random indexes
+		iran=scipy.stats.randint.rvs(0,n,size=n)	# Array of random indexes
 		for x in v:	vboot.append(x[iran])
 	else:	# if v is an array, not a list of arrays
 		n=v.size
-		iran=scipy.random.randint(0,n,n)	# Array of random indexes
+		iran=scipy.stats.randint.rvs(0,n,size=n)	# Array of random indexes
 		vboot=v[iran]
 	
 	return vboot
