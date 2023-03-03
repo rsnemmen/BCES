@@ -150,7 +150,14 @@ Usage:
 	          sim3           ...
 	"""
 	for i in tqdm.tqdm(range(nsim)):
-		[y1sim,y1errsim,y2sim,y2errsim,cerrsim]=bootstrap([y1,y1err,y2,y2err,cerr])
+		# This is needed for small datasets. With a dataset of e.g. 4 points,
+		# bootstrapping can generate a mock array with 4 repeated points. This
+		# will cause an error in the linear regression.
+		allEquals=True
+		while allEquals:
+			[y1sim,y1errsim,y2sim,y2errsim,cerrsim]=bootstrap([y1,y1err,y2,y2err,cerr])
+
+			allEquals=allEqual(y1sim)
 		
 		asim,bsim,errasim,errbsim,covabsim=bces(y1sim,y1errsim,y2sim,y2errsim,cerrsim)	
 		
@@ -180,9 +187,6 @@ Usage:
 	
 
 
-
-
-
 def checkNan(am,bm):
 	"""
 	Sometimes, if the dataset is very small, the regression parameters in
@@ -200,6 +204,17 @@ def checkNan(am,bm):
 	return np.delete(am,idel,0),np.delete(bm,idel,0)
 
 
+
+def allEqual(x):
+	"""
+Check if all elements in an array are equal. 
+Returns True if they are all the same.
+	"""
+	from itertools import groupby
+
+	g = groupby(x)
+
+	return next(g, True) and not next(g, False)
 
 
 
@@ -232,7 +247,14 @@ realized the reason was the use of lambda functions.
 	y1,y1err,y2,y2err,cerr,nsim=x[0],x[1],x[2],x[3],x[4],x[5]
 	
 	for i in range(int(nsim)):
-		[y1sim,y1errsim,y2sim,y2errsim,cerrsim]=bootstrap([y1,y1err,y2,y2err,cerr])
+		# This is needed for small datasets. With datasets of 4 points or less,
+		# bootstrapping can generate a mock array with 4 repeated points. This
+		# will cause an error in the linear regression.
+		allEquals=True
+		while allEquals:
+			[y1sim,y1errsim,y2sim,y2errsim,cerrsim]=bootstrap([y1,y1err,y2,y2err,cerr])
+
+			allEquals=allEqual(y1sim)
 
 		asim,bsim,errasim,errbsim,covabsim=bces(y1sim,y1errsim,y2sim,y2errsim,cerrsim)	
 	
