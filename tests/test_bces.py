@@ -5,7 +5,7 @@ import bces.bces as BCES
 import numpy as np
 
 # reads test dataset
-data=np.load('data.npz')
+data=np.load('doc/data.npz')
 xdata=data['x']
 ydata=data['y']
 errx=data['errx']

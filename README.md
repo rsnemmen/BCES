@@ -74,9 +74,9 @@ By default, `bcesp` run in parallel with bootstrapping.
 
 # Examples
 
-[`bces-example.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/bces-examples.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
+[`bces-example.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/doc/bces-examples.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
 
-![](./fit.png)
+![](./doc/fit.png)
 
 If you have suggestions of more examples, feel free to add them.
 
