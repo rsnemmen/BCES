@@ -106,7 +106,8 @@ If you end up using this code in your paper, you are morally obliged to cite the
 
 I spent considerable time writing this code, making sure it is correct and *user-friendly*, so I would appreciate your citation of the first paper in the above list as a token of gratitude.
 
-If you are *really* happy with the code, [you can buy me a beer](https://www.dropbox.com/s/a0rp5un6ubrkph2/crypto%20wallets.pdf?dl=0).
+If you are *really* happy with the code, you can buy me a coffee.
+[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=YOUR_USERNAME&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/nemmen)
 
 
 
