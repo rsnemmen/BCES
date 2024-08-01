@@ -1,5 +1,5 @@
-Linear regression for data with measurement errors and intrinsic scatter (BCES)
-==========
+BCES: Linear regression for data with measurement errors and intrinsic scatter
+=========================================
 
 Python module for performing robust linear regression on (X,Y) data points where both X and Y have measurement errors. 
 
@@ -12,7 +12,7 @@ The fitting method is the *bivariate correlated errors and intrinsic scatter* (B
 
 In order to understand how to perform and interpret the regression results, please read the paper. 
 
-# Installation
+## Installation
 
 Using `pip`:
 
@@ -34,7 +34,7 @@ Alternatively, if you plan to modify the source then install the package with a 
 
 
 
-# Usage 
+## Usage 
 
 	import bces.bces as BCES
 	a,b,aerr,berr,covab=BCES.bcesp(x,xerr,y,yerr,cov)
@@ -72,7 +72,7 @@ By default, `bcesp` run in parallel with bootstrapping.
 
 
 
-# Examples
+## Examples
 
 [`bces-example.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/doc/bces-examples.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
 
@@ -82,7 +82,7 @@ If you have suggestions of more examples, feel free to add them.
 
 
 
-# Running Tests
+## Running Tests
 
 To test your installation, run the following command inside the BCES directory:
 
@@ -92,12 +92,12 @@ pytest -v
 
 
 
-# Requirements
+## Requirements
 
 See `requirements.txt`.
 
 
-# Citation
+## Citation
 
 If you end up using this code in your paper, you are morally obliged to cite the following works 
 
@@ -107,7 +107,7 @@ If you end up using this code in your paper, you are morally obliged to cite the
 I spent considerable time writing this code, making sure it is correct and *user-friendly*, so I would appreciate your citation of the first paper in the above list as a token of gratitude.
 
 If you are *really* happy with the code, you can buy me a coffee.
-[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=YOUR_USERNAME&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/nemmen)
+[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20me%20a%20coffee&emoji=&slug=nemmen&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff)](https://www.buymeacoffee.com/nemmen)
 
 
 
@@ -115,7 +115,7 @@ If you are *really* happy with the code, you can buy me a coffee.
 
 
 
-# Todo
+## Todo
 
 If you have improvements to the code, suggestions of examples,speeding up the code etc, feel free to [submit a pull request](https://guides.github.com/activities/contributing-to-open-source/).
 
@@ -129,7 +129,7 @@ If you have improvements to the code, suggestions of examples,speeding up the co
 ---
 
 
-Copyright (c) 2023, [Rodrigo Nemmen](https://rodrigonemmen.com).
+Copyright (c) 2024, [Rodrigo Nemmen](https://rodrigonemmen.com).
 [All rights reserved](http://opensource.org/licenses/BSD-2-Clause).
 
 
