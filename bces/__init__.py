@@ -1,6 +1,6 @@
 """BCES linear regression for data with measurement errors."""
 
-__version__ = "1.5.1"
+__version__ = "1.6"
 
 # NOTE: `from bces import bces` returns the bces.bces submodule (not the function)
 # due to a naming collision — the package, submodule, and core function share the

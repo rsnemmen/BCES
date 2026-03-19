@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bces"
-version = "1.5.1"
+version = "1.6"
 description = "Python module for performing linear regression for data with measurement errors and intrinsic scatter"
 readme = "README.md"
 license = "MIT"
