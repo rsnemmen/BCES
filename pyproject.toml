@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bces"
+version = "1.5.1"
+description = "Python module for performing linear regression for data with measurement errors and intrinsic scatter"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [{name = "Rodrigo Nemmen", email = "rodrigo.nemmen@iag.usp.br"}]
+keywords = ["statistics", "fitting", "linear-regression", "machine-learning"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+    "tqdm",
+]
+
+[project.urls]
+Homepage = "https://github.com/rsnemmen/BCES"

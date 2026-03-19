@@ -1,15 +1,18 @@
-"""
+"""BCES linear regression for data with measurement errors."""
 
-Python module for performing robust linear regression on (X,Y) data points where 
-both X and Y have measurement errors.
+__version__ = "1.5.1"
 
-The fitting method is the bivariate correlated errors and intrinsic scatter 
-(BCES) and follows the description given in Akritas, M. G., & Bershady, M. A. 
-Astrophysical Journal, 1996, 470, 706. 
+# NOTE: `from bces import bces` returns the bces.bces submodule (not the function)
+# due to a naming collision — the package, submodule, and core function share the
+# name "bces". Use `import bces.bces as BCES; BCES.bces(...)` or
+# `from bces.bces import bces` to access the regression function directly.
 
-Author: Rodrigo Nemmen, https://rodrigonemmen.com
-"""
-
+__all__ = ["bces", "bcesboot", "bcesp", "bootstrap"]
 
 
-
+def __getattr__(name):
+    """Lazy attribute access for non-submodule names."""
+    if name in ("bcesboot", "bcesp", "bootstrap"):
+        import bces.bces as _mod
+        return getattr(_mod, name)
+    raise AttributeError(f"module 'bces' has no attribute {name!r}")

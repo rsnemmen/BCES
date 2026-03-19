@@ -18,5 +18,7 @@ setup(
     download_url = 'https://github.com/rsnemmen/BCES/archive/1.5.1.tar.gz',
     license=license,
     keywords = ['statistics', 'fitting', 'linear-regression','machine-learning'],
-    packages=find_packages(exclude=('tests', 'docs'))
+    packages=find_packages(exclude=('tests', 'docs')),
+    install_requires=['numpy', 'scipy', 'tqdm'],
+    python_requires='>=3.8',
 )
