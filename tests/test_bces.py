@@ -115,3 +115,27 @@ def test_allEqual():
     assert BCES.allEqual(np.array([3, 3, 3])) is True
     assert BCES.allEqual(np.array([1, 2, 3])) is False
     assert BCES.allEqual(np.array([1])) is True
+
+
+def test_known_slope():
+    """
+    Fit synthetic data with a known true slope, intercept, and intrinsic
+    scatter, and verify BCES Y|X recovers them within reasonable tolerances.
+    """
+    rng = np.random.default_rng(42)
+    n = 200
+    true_a, true_b = 2.5, 1.0
+
+    x_true = rng.uniform(0, 10, n)
+    xerr = rng.uniform(0.1, 0.3, n)
+    yerr = rng.uniform(0.1, 0.3, n)
+    scatter = rng.normal(0, 0.5, n)     # intrinsic scatter
+
+    # observed values with measurement noise and scatter
+    x = x_true + rng.normal(0, xerr)
+    y = true_a * x_true + true_b + scatter + rng.normal(0, yerr)
+
+    a, b, erra, errb, covab = BCES.bces(x, xerr, y, yerr, np.zeros(n))
+
+    np.testing.assert_allclose(a[0], true_a, atol=0.2)
+    np.testing.assert_allclose(b[0], true_b, atol=0.5)
