@@ -7,12 +7,12 @@ __version__ = "1.6"
 # name "bces". Use `import bces.bces as BCES; BCES.bces(...)` or
 # `from bces.bces import bces` to access the regression function directly.
 
-__all__ = ["bces", "bcesboot", "bcesp", "bootstrap"]
+__all__ = ["bces", "bcesboot", "bcesp", "bootstrap", "wls", "wlsboot", "wlsp"]
 
 
 def __getattr__(name):
     """Lazy attribute access for non-submodule names."""
-    if name in ("bcesboot", "bcesp", "bootstrap"):
+    if name in ("bcesboot", "bcesp", "bootstrap", "wls", "wlsboot", "wlsp"):
         import bces.bces as _mod
         return getattr(_mod, name)
     raise AttributeError(f"module 'bces' has no attribute {name!r}")

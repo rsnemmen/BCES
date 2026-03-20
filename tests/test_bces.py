@@ -117,6 +117,69 @@ def test_allEqual():
     assert BCES.allEqual(np.array([1])) is True
 
 
+def test_wls_known_slope():
+    """
+    WLS should recover the true slope and intercept for synthetic data
+    where X is error-free, Y has heteroscedastic errors + intrinsic scatter.
+    """
+    rng = np.random.default_rng(7)
+    n = 300
+    true_a, true_b = 3.0, -1.5
+
+    x = rng.uniform(1, 10, n)
+    yerr = rng.uniform(0.1, 0.5, n)
+    scatter = rng.normal(0, 0.3, n)
+    y = true_a * x + true_b + scatter + rng.normal(0, yerr)
+
+    a, b, aerr, berr, covab = BCES.wls(x, y, yerr)
+
+    np.testing.assert_allclose(a, true_a, atol=0.15)
+    np.testing.assert_allclose(b, true_b, atol=0.5)
+
+
+def test_wls_vs_ols():
+    """
+    WLS should give smaller variance than plain OLS for the same
+    heteroscedastic data setup.
+    """
+    rng = np.random.default_rng(42)
+    n = 200
+    true_a = 2.0
+
+    slopes_wls, slopes_ols = [], []
+    for _ in range(300):
+        x = rng.uniform(0, 10, n)
+        yerr = rng.uniform(0.1, 1.0, n)
+        y = true_a * x + rng.normal(0, yerr)
+
+        a_wls, *_ = BCES.wls(x, y, yerr)
+        slopes_wls.append(a_wls)
+
+        # Plain OLS
+        xm, ym = x.mean(), y.mean()
+        a_ols = np.sum((x - xm) * (y - ym)) / np.sum((x - xm)**2)
+        slopes_ols.append(a_ols)
+
+    assert np.std(slopes_wls) < np.std(slopes_ols)
+
+
+def test_wlsboot():
+    """WLS bootstrap should recover the true slope to 1 decimal place."""
+    rng = np.random.default_rng(99)
+    n = 200
+    true_a, true_b = 2.5, 1.0
+
+    x = rng.uniform(0, 10, n)
+    yerr = rng.uniform(0.1, 0.3, n)
+    scatter = rng.normal(0, 0.5, n)
+    y = true_a * x + true_b + scatter + rng.normal(0, yerr)
+
+    a, b, aerr, berr, covab = BCES.wlsp(x, y, yerr, nsim=2000)
+
+    np.testing.assert_allclose(a, true_a, atol=0.2)
+    np.testing.assert_allclose(b, true_b, atol=0.5)
+
+
 def test_known_slope():
     """
     Fit synthetic data with a known true slope, intercept, and intrinsic

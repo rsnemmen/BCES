@@ -222,6 +222,177 @@ Returns True if they are all the same.
 
 
 
+# WLS fitting
+# ============
+
+def wls(x, y, yerr):
+	"""
+Weighted Least Squares regression for the case where X is measured without
+error (V_{11,i} = 0). Implements the WLS estimator from Section 2.3 of
+Akritas & Bershady (1996).
+
+Usage:
+
+>>> a, b, aerr, berr, covab = wls(x, y, yerr)
+
+Output:
+
+- a, b : best-fit slope and intercept (Y = a*X + b)
+- aerr, berr : standard deviations of a and b
+- covab : covariance between a and b
+
+Arguments:
+
+- x : independent variable (assumed error-free)
+- y : dependent variable
+- yerr : measurement errors on y (array)
+	"""
+	n = len(x)
+	v22 = yerr**2
+
+	# Step 1: OLS to get initial slope/intercept
+	xmean, ymean = x.mean(), y.mean()
+	beta_ols = np.sum((x - xmean) * (y - ymean)) / np.sum((x - xmean)**2)
+	alpha_ols = ymean - beta_ols * xmean
+
+	# Step 2: residuals
+	R = y - alpha_ols - beta_ols * x
+
+	# Step 3: intrinsic scatter variance
+	Ve = np.mean((R - R.mean())**2) - np.mean(v22)
+	# Clamp to zero to avoid negative weights
+	Ve = max(Ve, 0.0)
+
+	# Step 4: total variance per point
+	sigma2 = Ve + v22
+
+	# Step 5: WLS slope and intercept (equations 18-19)
+	w = 1.0 / sigma2
+	S   = w.sum()
+	Sx  = (w * x).sum()
+	Sy  = (w * y).sum()
+	Sxx = (w * x**2).sum()
+	Sxy = (w * x * y).sum()
+	Delta = S * Sxx - Sx**2
+
+	a = (S * Sxy - Sx * Sy) / Delta
+	b = (Sxx * Sy - Sx * Sxy) / Delta
+
+	# Step 6: variance estimates (equations 20-21)
+	aerr = np.sqrt(S / Delta)
+	berr = np.sqrt(Sxx / Delta)
+	covab = -Sx / Delta
+
+	return a, b, aerr, berr, covab
+
+
+def wlsboot(x, y, yerr, nsim=10000):
+	"""
+Bootstrap version of WLS regression.
+
+Usage:
+
+>>> a, b, aerr, berr, covab = wlsboot(x, y, yerr, nsim)
+
+:param x: independent variable (error-free)
+:param y: dependent variable
+:param yerr: measurement errors on y
+:param nsim: number of bootstrap simulations
+
+:returns: a, b -- best-fit slope and intercept
+:returns: aerr, berr -- bootstrap standard deviations
+:returns: covab -- bootstrap covariance between a and b
+	"""
+	print("WLS bootstrapping progress:")
+
+	alist, blist = [], []
+	for i in tqdm.tqdm(range(nsim)):
+		allEquals = True
+		while allEquals:
+			[xsim, ysim, yerrsim] = bootstrap([x, y, yerr])
+			allEquals = allEqual(xsim)
+
+		asim, bsim, _, _, _ = wls(xsim, ysim, yerrsim)
+		alist.append(asim)
+		blist.append(bsim)
+
+	am = np.array(alist).reshape(-1, 1)
+	bm = np.array(blist).reshape(-1, 1)
+
+	a = am.mean()
+	b = bm.mean()
+	aerr = np.sqrt(1./(nsim-1) * (np.sum(am**2) - nsim * a**2))
+	berr = np.sqrt(1./(nsim-1) * (np.sum(bm**2) - nsim * b**2))
+	covab = 1./(nsim-1) * (np.sum(am * bm) - nsim * a * b)
+
+	return a, b, aerr, berr, covab
+
+
+def _ab_wls(x):
+	"""
+	Worker function for parallel WLS bootstrap.
+	Argument: [x_data, y_data, yerr_data, nsim_per_core]
+	Returns: (am, bm) arrays of shape (nsim_per_core,)
+	"""
+	x_data, y_data, yerr_data, nsim = x[0], x[1], x[2], int(x[3])
+
+	alist, blist = [], []
+	for i in range(nsim):
+		allEquals = True
+		while allEquals:
+			[xsim, ysim, yerrsim] = bootstrap([x_data, y_data, yerr_data])
+			allEquals = allEqual(xsim)
+
+		asim, bsim, _, _, _ = wls(xsim, ysim, yerrsim)
+		alist.append(asim)
+		blist.append(bsim)
+
+	return np.array(alist), np.array(blist)
+
+
+def wlsp(x, y, yerr, nsim=10000):
+	"""
+Parallel bootstrap version of WLS regression.
+
+Usage:
+
+>>> a, b, aerr, berr, covab = wlsp(x, y, yerr, nsim)
+
+:param x: independent variable (error-free)
+:param y: dependent variable
+:param yerr: measurement errors on y
+:param nsim: number of bootstrap simulations
+
+:returns: a, b -- best-fit slope and intercept
+:returns: aerr, berr -- bootstrap standard deviations
+:returns: covab -- bootstrap covariance between a and b
+	"""
+	print("WLS parallel bootstrap,", nsim, "trials...")
+	tic = time.time()
+
+	ncores = multiprocessing.cpu_count()
+	n = 2 * ncores
+
+	pargs = [[x, y, yerr, nsim // n] for _ in range(n)]
+
+	with multiprocessing.Pool(processes=ncores) as pool:
+		presult = pool.map(_ab_wls, pargs)
+
+	am = np.concatenate([r[0] for r in presult])
+	bm = np.concatenate([r[1] for r in presult])
+
+	actual_nsim = len(am)
+	a = am.mean()
+	b = bm.mean()
+	aerr = np.sqrt(1./(actual_nsim-1) * (np.sum(am**2) - actual_nsim * a**2))
+	berr = np.sqrt(1./(actual_nsim-1) * (np.sum(bm**2) - actual_nsim * b**2))
+	covab = 1./(actual_nsim-1) * (np.sum(am * bm) - actual_nsim * a * b)
+
+	print("%f s" % (time.time() - tic))
+
+	return a, b, aerr, berr, covab
+
+
 # Methods which make use of parallelization
 # ===========================================
 
