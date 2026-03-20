@@ -10,13 +10,9 @@ The **BCES** fitting method is the *bivariate correlated errors and intrinsic sc
 * it permits the magnitudes of the measurement errors to depend on the measurements
 * other "symmetric" lines such as the bisector and the orthogonal regression can be constructed.
 
-In order to understand how to perform and interpret the regression results, please [read the paper](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/).
-
-The **WLS** (weighted least squares) method handles the case where only Y has measurement errors and X is treated as error-free. It accounts for intrinsic scatter in the data and also follows [Akritas & Bershady 1996, §2.3](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/).
+The **WLS** (weighted least squares) method handles the case where only Y has measurement errors and X is treated as error-free. It accounts for intrinsic scatter in the data and follows Akritas & Bershady 1996, §2.3. 
 
 ## Installation
-
-Using `pip`:
 
     pip install bces
 
@@ -31,6 +27,8 @@ Alternatively, if you plan to modify the source then install the package with a 
 
 
 ## Usage 
+
+### BCES
 
 	import bces.bces as BCES
 	a,b,aerr,berr,covab=BCES.bcesp(x,xerr,y,yerr,cov)
@@ -51,24 +49,24 @@ Output:
 - *aerr,berr* : the standard deviations in a,b
 - *covab* : the covariance between a and b (e.g. for plotting confidence bands)
 
-Each element of the arrays *a*, *b*, *aerr*, *berr* and *covab* correspond to the result of one of the different BCES lines: *y|x*, *x|y*, bissector and orthogonal, as detailed in the table below. Please read the [original BCES paper](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/) to understand what these different lines mean.
+Each element of the arrays `a`, `b`, `aerr`, `berr` and `covab` correspond to the result of one of the different BCES lines: $y|x$, $x|y$, bissector and orthogonal, as detailed in the table below. Please read the [original BCES paper](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/) to understand what these different lines mean.
 
 
 | Element  | Method  |  Description |
 |---|---| --- |
 | 0  | *y\|x*  | Assumes *x* as the independent variable |
 | 1  |  *x\|y* | Assumes *y* as the independent variable |
-| 2  | bissector  | Line that bisects the *y\|x* and *x\|y*. This approach is self-inconsistent, *do not use this method*, cf. [Hogg, D. et al. 2010, arXiv:1008.4686](http://labs.adsabs.harvard.edu/adsabs/abs/2010arXiv1008.4686H/). |
+| 2  | bissector  | Line that bisects the *y\|x* and *x\|y*. This approach is self-inconsistent, [*do not use this method*](https://arxiv.org/abs/1008.4686). |
 | 3  | orthogonal  | Orthogonal least squares: line that minimizes orthogonal distances. Should be used when it is not clear which variable should be treated as the independent one |
 
-By default, `bcesp` run in parallel with bootstrapping.
+By default, `bcesp` runs the bootstrapping in parallel.
 
 
 
-## WLS Usage
+### WLS
 
 	import bces.bces as BCES
-	a,b,aerr,berr,covab=BCES.wlsp(x,y,yerr)
+	a,b,aerr,berr,covab=BCES.wls(x,y,yerr)
 
 Arguments:
 
@@ -83,10 +81,16 @@ Output:
 
 Note that unlike BCES, WLS returns scalar values (a single regression line) rather than 4-element arrays.
 
-By default, `wlsp` runs in parallel with bootstrapping.
+The `wlsp` method performs bootstrapping in parallel, if you need that.
 
+### When to use BCES or WLS?
 
+Both methods return unbiased estimates of the slope and intercept, but they suit different statistical situations:
 
+- **Use BCES** when both X and Y have measurement errors, or when measurement errors on X and Y may be correlated.
+- **Use WLS** when only Y has measurement errors (X is error-free or its errors are negligible). 
+
+Both methods account for intrinsic scatter.
 
 
 
@@ -98,23 +102,13 @@ By default, `wlsp` runs in parallel with bootstrapping.
 
 ![](./doc/fit.png)
 
-If you have suggestions of more examples, feel free to add them.
-
 
 
 ## Running Tests
 
-To test your installation, run the following command inside the BCES directory:
-
 ```bash
 pytest -v -s
 ```
-
-
-
-## Requirements
-
-See `requirements.txt`.
 
 
 ## Citation
