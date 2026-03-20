@@ -1,16 +1,18 @@
-BCES: Linear regression for data with measurement errors and intrinsic scatter
+BCES and WLS: Linear regression for data with measurement errors and intrinsic scatter
 =========================================
 
-Python module for performing robust linear regression on (X,Y) data points where both X and Y have measurement errors. 
+Python module for performing robust linear regression on (X,Y) data points with measurement errors.
 
-The fitting method is the *bivariate correlated errors and intrinsic scatter* (BCES) and follows the description given in [Akritas & Bershady. 1996, ApJ](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). Some of the advantages of BCES regression compared to ordinary least squares fitting (quoted from Akritas & Bershady 1996):
+The **BCES** fitting method is the *bivariate correlated errors and intrinsic scatter* (BCES) and follows the description given in [Akritas & Bershady. 1996, ApJ](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). Some of the advantages of BCES regression compared to ordinary least squares fitting (quoted from Akritas & Bershady 1996):
 
 * it allows for measurement errors on both variables
 * it permits the measurement errors for the two variables to be dependent
 * it permits the magnitudes of the measurement errors to depend on the measurements
 * other "symmetric" lines such as the bisector and the orthogonal regression can be constructed.
 
-In order to understand how to perform and interpret the regression results, please read the paper. 
+In order to understand how to perform and interpret the regression results, please [read the paper](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/).
+
+The **WLS** (weighted least squares) method handles the case where only Y has measurement errors and X is treated as error-free. It accounts for intrinsic scatter in the data and also follows [Akritas & Bershady 1996, §2.3](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/).
 
 ## Installation
 
@@ -63,12 +65,36 @@ By default, `bcesp` run in parallel with bootstrapping.
 
 
 
+## WLS Usage
+
+	import bces.bces as BCES
+	a,b,aerr,berr,covab=BCES.wlsp(x,y,yerr)
+
+Arguments:
+
+- *x,y*: 1D data arrays
+- *yerr*: measurement errors affecting y, 1D array
+
+Output:
+
+- *a,b*: best-fit slope and intercept of the linear regression such that *y = Ax + B* (scalars)
+- *aerr,berr*: the standard deviations in a,b
+- *covab*: the covariance between a and b
+
+Note that unlike BCES, WLS returns scalar values (a single regression line) rather than 4-element arrays.
+
+By default, `wlsp` runs in parallel with bootstrapping.
+
+
+
 
 
 
 ## Examples
 
 [`bces-examples.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/doc/bces-examples.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
+
+[`wls.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/doc/wls.ipynb) with examples of WLS regression, including fits with intrinsic scatter.
 
 ![](./doc/fit.png)
 
@@ -81,7 +107,7 @@ If you have suggestions of more examples, feel free to add them.
 To test your installation, run the following command inside the BCES directory:
 
 ```bash
-pytest -v
+pytest -v -s
 ```
 
 
