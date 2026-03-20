@@ -8,7 +8,7 @@ with open('LICENSE') as f:
 
 setup(
     name='bces',
-    version='1.6',
+    version='2.0',
     description='Python module for performing linear regression for data with measurement errors and intrinsic scatter',
     long_description=readme,
     long_description_content_type='text/markdown',
