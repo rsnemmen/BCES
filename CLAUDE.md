@@ -15,7 +15,7 @@ pytest tests/test_bces.py::test_yx
 
 ## Architecture
 
-Single-file library: all regression logic lives in `bces/bces.py`. The package `__init__.py` is empty (just a docstring).
+Single-file library: all regression logic lives in `bces/bces.py`. The package `__init__.py` exposes `__version__`, `__all__`, and a `__getattr__` lazy-import mechanism for the public API.
 
 ### Key functions in `bces/bces.py`
 
@@ -43,7 +43,6 @@ a, b, aerr, berr, covab = BCES.bcesp(x, xerr, y, yerr, cov, nsim=10000)
 
 - `numpy`, `scipy` — core computation
 - `tqdm` — progress bar in `bcesboot`
-- `nmmn` — only used inside `checkNan` (optional, only triggered when NaNs appear in bootstrap results for very small datasets)
 
 ## Testing notes
 

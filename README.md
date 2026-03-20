@@ -18,15 +18,9 @@ Using `pip`:
 
     pip install bces
 
-If that does not work, you can install it using the `setup.py` script:
-
-    python setup.py install
-
-You may need to run the last command with `sudo`.
-
 Alternatively, if you plan to modify the source then install the package with a symlink, so that changes to the source files will be immediately available:
 
-    python setup.py develop
+    pip install -e .
 
 
 
@@ -74,7 +68,7 @@ By default, `bcesp` run in parallel with bootstrapping.
 
 ## Examples
 
-[`bces-example.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/doc/bces-examples.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
+[`bces-examples.ipynb` is a jupyter notebook](https://github.com/rsnemmen/BCES/blob/master/doc/bces-examples.ipynb) including a practical, step-by-step example of how to use BCES to perform regression on data with uncertainties on x and y. It also illustrates how to plot the confidence band for a fit.
 
 ![](./doc/fit.png)
 
