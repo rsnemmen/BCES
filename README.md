@@ -3,7 +3,7 @@ BCES and WLS: Linear regression for data with measurement errors and intrinsic s
 
 Python module for performing robust linear regression on (X,Y) data points with measurement errors.
 
-The **BCES** fitting method is the *bivariate correlated errors and intrinsic scatter* (BCES) and follows the description given in [Akritas & Bershady. 1996, ApJ](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). Some of the advantages of BCES regression compared to ordinary least squares fitting (quoted from Akritas & Bershady 1996):
+The **BCES** fitting method is the *bivariate correlated errors and intrinsic scatter* (BCES) and follows the description given in [Akritas & Bershady. 1996, ApJ](http://labs.adsabs.harvard.edu/adsabs/abs/1996ApJ...470..706A/). Some of the advantages of BCES regression compared to ordinary least squares (OLS) fitting:
 
 * it allows for measurement errors on both variables
 * it permits the measurement errors for the two variables to be dependent
@@ -91,6 +91,9 @@ Both methods return unbiased estimates of the slope and intercept, but they suit
 - **Use WLS** when only Y has measurement errors (X is error-free or its errors are negligible). 
 
 Both methods account for intrinsic scatter.
+
+**Why choose WLS over OLS?**
+When only Y has measurement errors, prefer WLS over OLS. OLS assigns equal weight to every data point regardless of measurement uncertainty, while WLS weights each point by the inverse of its error variance so more precisely measured points have greater influence on the fit. This produces more accurate and statistically efficient estimates when data points have heteroscedastic (unequal) errors.
 
 
 
