@@ -83,6 +83,8 @@ Note that unlike BCES, WLS returns scalar values (a single regression line) rath
 
 The `wlsp` method performs bootstrapping in parallel, if you need that.
 
+Note that WLS is equivalent to the standard chi-squared fitting (`scipy.optimize.curve_fit`) when intrinsic scatter is zero.
+
 ### When to use BCES or WLS?
 
 Both methods return unbiased estimates of the slope and intercept, but they suit different statistical situations:
